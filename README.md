@@ -1,3 +1,5 @@
+![Project Preview](preview.png)
+
 StaffSync: Employee Directory
 
 I built this project to practice working with live data and modern JavaScript. It’s a simple, one-page dashboard that pulls a list of 16 employees from a REST API and allows you to search through them instantly.
