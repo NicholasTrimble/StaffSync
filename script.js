@@ -23,7 +23,8 @@ async function getEmployees() {
 }
 
 function renderDirectory(employeesToDisplay) {
-    counter.textContent = `Showing ${employeesToDisplay.length} of ${allEmployees.length} employees`;
+    animateCounter(employeesToDisplay.length);
+
     
     if (employeesToDisplay.length === 0) {
         directory.innerHTML = '';
@@ -56,6 +57,58 @@ function performSearch() {
     renderDirectory(filteredEmployees);
 }
 
+// Animate cards
+function animateCounter(newCount) {
+    const total = allEmployees.length;
+    const duration = 300;
+    const start = parseInt(counter.textContent.match(/\d+/)[0]) || 0;
+    const startTime = performance.now();
+
+    function update(time) {
+        const progress = Math.min((time - startTime) / duration, 1);
+        const current = Math.floor(start + (newCount - start) * progress);
+        counter.textContent = `Showing ${current} of ${total} employees`;
+
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+
+    requestAnimationFrame(update);
+}
+
+
+const modal = document.getElementById('modal');
+const modalContent = document.getElementById('modal-content');
+
+directory.addEventListener('click', e => {
+    const card = e.target.closest('.card');
+    if (!card) return;
+
+    const index = Array.from(directory.children).indexOf(card);
+    const employee = allEmployees[index];
+
+    modalContent.innerHTML = `
+        <img src="${employee.picture.large}" style="border-radius:50%; width:120px;">
+        <h2>${employee.name.first} ${employee.name.last}</h2>
+        <p>${employee.email}</p>
+        <p>${employee.phone}</p>
+        <p>${employee.location.street.number} ${employee.location.street.name}</p>
+        <p>${employee.location.city}, ${employee.location.state}</p>
+    `;
+
+    modal.classList.add('active');
+});
+
+modal.addEventListener('click', () => {
+    modal.classList.remove('active');
+});
+
+
+
+
+
+
 searchInput.addEventListener('input', performSearch);
 
 searchBtn.addEventListener('click', performSearch);
@@ -65,5 +118,4 @@ resetBtn.addEventListener('click', () => {
     renderDirectory(allEmployees); 
 });
 
-// Start the app
 getEmployees();
