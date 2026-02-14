@@ -34,14 +34,15 @@ function renderDirectory(employeesToDisplay) {
     
     noResultsMessage.style.display = 'none'; 
 
-    const html = employeesToDisplay.map((employee, index) => `
-        <div class="card" style="--animation-order: ${index};">
-            <img src="${employee.picture.large}" alt="">
-            <h3>${employee.name.first} ${employee.name.last}</h3>
-            <p>${employee.email}</p>
-            <p>${employee.location.city}, ${employee.location.state}</p>
-        </div>
+    const html = employeesToDisplay.map(employee => `
+    <div class="card" data-id="${employee.login.uuid}">
+        <img src="${employee.picture.large}" alt="">
+        <h3>${employee.name.first} ${employee.name.last}</h3>
+        <p>${employee.email}</p>
+        <p>${employee.location.city}, ${employee.location.state}</p>
+    </div>
     `).join('');
+
 
     directory.innerHTML = html;
 }
@@ -85,8 +86,9 @@ directory.addEventListener('click', e => {
     const card = e.target.closest('.card');
     if (!card) return;
 
-    const index = Array.from(directory.children).indexOf(card);
-    const employee = allEmployees[index];
+    const id = card.dataset.id;
+    const employee = allEmployees.find(emp => emp.login.uuid === id);
+    if (!employee) return;
 
     modalContent.innerHTML = `
         <img src="${employee.picture.large}" style="border-radius:50%; width:120px;">
