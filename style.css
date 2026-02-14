@@ -149,8 +149,8 @@ h1 {
 }
 
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0;  }
+    to { opacity: 1; }
 }
 
 .card {
@@ -166,7 +166,6 @@ h1 {
     overflow: hidden;
 
     opacity: 0;
-    transform: translateY(20px);
     animation: slideUp 0.4s ease forwards;
     animation-delay: calc(var(--animation-order) * 70ms);
 }
